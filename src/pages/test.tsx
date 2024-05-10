@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import styles from './index.module.css';
 
 const Home = () => {
@@ -22,12 +21,26 @@ const Home = () => {
               const row = [];
               for(let j:number=0;j<8;j++) {
                 const stat = board[i][j];
-                let col = stat && ( (stat+1) && 'white'  || 'black' ) || 'transparent';
-                console.log(col)
-                const cell = <div className={styles.cell}>
-                  <div className={styles.stonewhite} style={{'background-color':col}} key={i+'_'+j}/>
+                let col = null;
+                if(stat === 1) {
+                  const cell = <div className={styles.cell}>
+                  <div className={styles.stonewhite}/>
                 </div>
+
+                  row.push(cell);
+                }else if(stat === -1) {
+                  const cell = <div className={styles.cell}>
+                <div className={styles.stoneblack}/>
+              </div>
+
                 row.push(cell);
+                } else {
+                  const cell = <div className={styles.cell}>
+                <div className={styles.stone}/>
+              </div>
+
+                row.push(cell);
+                }
 
               }
               col.push(<div>{row}</div>)
