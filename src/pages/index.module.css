@@ -90,16 +90,30 @@
   width:  80%;
   border-radius: 50%;
   border: 100px;
+
 }
+
+.animate {
+  transition-duration: 5s;
+}
+
+.fixedStone {
+  overflow: hidden;
+  cursor:pointer;
+}
+
 .stoneblack {
   height: 80%;
   width:  80%;
   border-radius: 50%;
   background-color: black;
 
-  overflow: hidden;
-  cursor:pointer;
 }
+
+@keyframe .stoneblack {
+
+}
+
 .stonewhite {
   height: 80%;
   width:  80%;
@@ -117,6 +131,9 @@
   height: 80px;
   width: 80px;
   border: 1px solid black;
+
+  transition-duration: .5s;
+
 }
 
 .container {

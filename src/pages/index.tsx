@@ -106,18 +106,28 @@ const Home = () => {
       }
 
 
-      const stoneStyle = styles.stone//styles[['stoneblack','stone','stonewhite'][board[x][y]+1]]
+      let stoneStyle = [styles.stone]
+      let water = '';
+      if(board[x][y]) {
+        stoneStyle.push(styles.fixedStone)
+      } else {
+        water = <div className={styles.wave}/>
+      }
+      stoneStyle = stoneStyle.join(' ')
       return alreadyHighlighted === (x*8+y)?
   <div className={stoneStyle} style={{backgroundColor:col,border:border}} key={x * 8 + y}
       ref={ref}
       onClick={ ()=>clicked(x,y) }
-      ><div className={styles.wave}/>
+      >
+        {water}
       </div>
       : <div className={stoneStyle} style={{backgroundColor:col,border:border}} key={x * 8 + y}
       ref={ref}
       onClick={ ()=>clicked(x,y) }
       onMouseEnter={ ()=>mouseEntered(x,y)}
-      ><div className={styles.wave}/></div>
+      >
+      {water}
+      </div>
     }
     const InpuItem = forwardRef(cellGenerator)
 
