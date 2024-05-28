@@ -28,17 +28,29 @@ const Home = () => {
     for(var i = -1;i <= 1;i ++) {
       for(var j = -1;j <= 1;j ++) {
         if(i || j) {
-          let phase = 0;
+          //let c = 0;
+          let isFirst = true;
           let flag = false;
           let [posX,posY] = [x,y];
-          while(phase < 2) {
+          while(true) {
             posX += i;
             posY += j;
             if(board[posX] && board[posX][posY]) {
-              const isSameColor = board[posX][posY] == color;
+              //if(isSameColor) c++;
+              if(board[posX][posY] == color) {
+                if(isFirst) {
+                  flag ||= false;
+                } else {
+                  flag ||= true;
+                }
+              }
+              isFirst=false;
               /**
+               * phase = 0
+               * c > 0 -> false&end
+               * phase = 1
+               * c > 0 -> true&end
                *
-               * 
                */
               switch(phase) {
                 case 0:
