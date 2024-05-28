@@ -50,6 +50,7 @@ const Home = () => {
         }
         setBoard(copiedBoard)
         setTurnColor(turnColor*-1);
+        setAlreadyHighlighted(null);
       }
     }
 
@@ -83,19 +84,23 @@ const Home = () => {
   function putChecker(x:number,y:number) {
     if(board[x][y])return false;
     const color = turnColor;
+    let res = false;
     for(var i = -1;i <= 1;i ++) {
       for(var j = -1;j <= 1;j ++) {
         if(i || j) {
           let c = 0;//
           let [posX,posY] = [x,y];
           while(board[posX+=i]?.[posY+=j]) {
-            if(board[posX][posY] === color) return c;
+            if((board[posX][posY] === color)) {
+              res ||= c;
+              break;
+            };
             c++;//
           }
         }
       }
     }
-    return false;
+    return res;
   }
 
   function getTurnableStones(x:number,y:number) {
