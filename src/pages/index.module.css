@@ -3,14 +3,14 @@
   height: 100%;
   width: 100%;
   border-radius: 38%;
-  transform: rotate(360deg);
-  transition: all 5s ease;
-  animation: wave 30s linear infinite;
+  /*transform: rotate(360deg);*/
+  transition-duration: 1s;
+  /*animation: wave 30s linear infinite;*/
 }
-@keyframes wave {
+/*@keyframes wave {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(3600deg); }
-}
+}*/
 .circle:hover .wave {
   top: 0%;
 }
@@ -91,6 +91,7 @@
   border-radius: 50%;
   border: 100px;
 
+  transition-duration: 1s;
 }
 
 .animate {

@@ -39,10 +39,7 @@ const Home = () => {
   }
   function game(displayResult:boolean=false) {
     let [gameEndCounter,setGameEndCounter] = useState(false);
-    const cellRefs = useRef<RefObject<HTMLInputElement>[]>([]);
-    for(let n = 0;n < 8*8;n++) {
-      cellRefs.current[n] = createRef<HTMLInputElement>()
-    }
+
 
     let [highlightCells,setHighlightCells] = useState([]);
     let [alreadyHighlighted,setAlreadyHighlighted] = useState(null);
@@ -60,76 +57,6 @@ const Home = () => {
         }
       }
     }
-    function cellGenerator({x,y}:{x:number,y:number},ref) {
-      const stat = board[x][y];
-      let col = stat && ( (stat+1) && 'white'  || 'transparent' ) ||
-      putChecker(x,y) && 'rgba(255,255,255,0.5)' || 'transparent';
-
-      let border = stat == -1 ?'solid 1em white':'transparent'
-      function mouseEntered() {
-        if(mode!==0)return;
-        const ID = x*8+y;
-        setAlreadyHighlighted(ID);
-        const cells = [];
-        const turnableStones = getTurnableStones(x,y);
-        for(const line of turnableStones) {
-          let [posX,posY] = [x,y];
-          for(var n = 0;n < line[2];n ++) {
-            posX += line[0];
-            posY += line[1];
-            cells.push(posX*8+posY)
-          }
-        }
-        setHighlightCells(cells);
-
-      }
-
-      function clicked() {
-        if(mode!==0)return;
-        const turnableStones = getTurnableStones(x,y);
-        if(turnableStones.length) {
-          const copiedBoard = structuredClone(board);//DeepCopy
-          copiedBoard[x][y] = turnColor
-
-          for(const line of turnableStones) {
-            let [posX,posY] = [x,y];
-            for(var n = 0;n < line[2];n ++) {
-              posX += line[0];
-              posY += line[1];
-              copiedBoard[posX][posY] *= -1;
-            }
-          }
-          setBoard(copiedBoard)
-          //setTurnColor(turnColor*-1);
-          setAlreadyHighlighted(null);
-        }
-      }
-
-
-      let stoneStyle = [styles.stone]
-      let water = '';
-      if(board[x][y]) {
-        stoneStyle.push(styles.fixedStone)
-      } else {
-        water = <div className={styles.wave}/>
-      }
-      stoneStyle = stoneStyle.join(' ')
-      return alreadyHighlighted === (x*8+y)?
-  <div className={stoneStyle} style={{backgroundColor:col,border:border}} key={x * 8 + y}
-      ref={ref}
-      onClick={ ()=>clicked(x,y) }
-      >
-        {water}
-      </div>
-      : <div className={stoneStyle} style={{backgroundColor:col,border:border}} key={x * 8 + y}
-      ref={ref}
-      onClick={ ()=>clicked(x,y) }
-      onMouseEnter={ ()=>mouseEntered(x,y)}
-      >
-      {water}
-      </div>
-    }
-    const InpuItem = forwardRef(cellGenerator)
 
 
 
@@ -183,7 +110,44 @@ const Home = () => {
     }
 
 
+    function mouseEntered(x,y) {
+      if(mode!==0)return;
+      const ID = x*8+y;
+      setAlreadyHighlighted(ID);
+      const cells = [];
+      const turnableStones = getTurnableStones(x,y);
+      for(const line of turnableStones) {
+        let [posX,posY] = [x,y];
+        for(var n = 0;n < line[2];n ++) {
+          posX += line[0];
+          posY += line[1];
+          cells.push(posX*8+posY)
+        }
+      }
+      setHighlightCells(cells);
 
+    }
+
+    function clicked(x,y) {
+      if(mode!==0)return;
+      const turnableStones = getTurnableStones(x,y);
+      if(turnableStones.length) {
+        const copiedBoard = structuredClone(board);//DeepCopy
+        copiedBoard[x][y] = turnColor
+
+        for(const line of turnableStones) {
+          let [posX,posY] = [x,y];
+          for(var n = 0;n < line[2];n ++) {
+            posX += line[0];
+            posY += line[1];
+            copiedBoard[posX][posY] *= -1;
+          }
+        }
+        setBoard(copiedBoard)
+        setTurnColor(turnColor*-1);
+        setAlreadyHighlighted(null);
+      }
+    }
 
 
     return (
@@ -245,7 +209,46 @@ const Home = () => {
                     color = 'rgba(100,200,100,0.5)'
                   }
                   const cell = <div className={styles.cell} style={{backgroundColor:color}}>
-                    <InpuItem ref={cellRefs.current[x * 8 + y]} x={x} y={y}/>
+                    {
+                      (function(x,y) {
+                        const stat = board[x][y];
+                        let col = stat && ( (stat+1) && 'white'  || 'transparent' ) ||
+                        putChecker(x,y) && 'white' || 'rgba(255,255,255,0.2)';
+
+                        let border = stat == -1 ?'solid 1em rgb(220,220,220)':
+                        stat == 1?'solid 1em rgb(50,50,100)' : 'solid 0em transparent'
+
+
+
+                        let stoneStyle = [styles.stone]
+                        let water = <div className={styles.wave} style={{opacity:100}}/>;
+                        if(board[x][y]) {
+                          stoneStyle.push(styles.fixedStone)
+                          water = <div className={styles.wave}
+                          style={{opacity:0.5,borderRadius:'0%'}}
+                          />
+                        } else {
+
+                          stoneStyle.push(styles.fixedStone)
+                          water = <div className={styles.wave}
+                          style={{opacity:0.5,borderRadius:'0%',transform: 'rotate(360deg)'}}
+                          />
+                        }
+                        stoneStyle = stoneStyle.join(' ')
+                        return alreadyHighlighted === (x*8+y)?
+                    <div className={stoneStyle} style={{backgroundColor:col,border:border}} key={x * 8 + y}
+                        onClick={ ()=>clicked(x,y) }
+                        >
+                          {water}
+                        </div>
+                        : <div className={stoneStyle} style={{backgroundColor:col,border:border}} key={x * 8 + y}
+                        onClick={ ()=>clicked(x,y) }
+                        onMouseEnter={ ()=>mouseEntered(x,y)}
+                        >
+                        {water}
+                        </div>
+                      })(x,y)
+                    }
                   </div>
                   row.push(cell);
                   if(x*8+y===63)boardLoaded()
