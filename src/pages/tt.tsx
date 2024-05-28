@@ -8,33 +8,26 @@ const Home = () => {
     cellRefs.current[n] = createRef<HTMLInputElement>()
   }
 
-  let [highlightCells,setHighlightCells] = useState([]);
-  let [alreadyHighlighted,setAlreadyHighlighted] = useState(null);
 
   function cellGenerator({x,y}:{x:number,y:number},ref) {
     const stat = board[x][y];
     let col = stat && ( (stat+1) && 'white'  || 'black' ) ||
     putChecker(x,y) && 'rgba(255,255,255,0.5)' || 'transparent';
 
-    function mouseEntered() {
-      console.log('MOUSE_ENTER',x*8+y,alreadyHighlighted)
-      const ID = x*8+y;
-      setAlreadyHighlighted(ID);
-      const cells = [];
-      const turnableStones = getTurnableStones(x,y);
-      for(const line of turnableStones) {
+    function mouseovered(x:number,y:number) {
+      //console.log(x,y,true)
+      //const turnableStones = getTurnableStones(x,y);
+      /*for(const line of turnableStones) {
         let [posX,posY] = [x,y];
         for(var n = 0;n < line[2];n ++) {
           posX += line[0];
           posY += line[1];
-          cells.push(posX*8+posY)
+          ref.current.style.backGround = 'yellow'
         }
-      }
-      setHighlightCells(cells);
+      }*/
     }
 
-    function clicked() {
-      console.log('CLICK',x*8+y,alreadyHighlighted)
+    function clicked(x:number,y:number) {
       const turnableStones = getTurnableStones(x,y);
       if(turnableStones.length) {
         const copiedBoard = structuredClone(board);//DeepCopy
@@ -54,15 +47,10 @@ const Home = () => {
     }
 
 
-    return alreadyHighlighted === (x*8+y)?
-<div className={styles.stonewhite} style={{backgroundColor:col}} key={x * 8 + y}
+    return <div className={styles.stonewhite} style={{backgroundColor:col}} key={x * 8 + y}
     ref={ref}
     onClick={ ()=>clicked(x,y) }
-    />
-    : <div className={styles.stonewhite} style={{backgroundColor:col}} key={x * 8 + y}
-    ref={ref}
-    onClick={ ()=>clicked(x,y) }
-    onMouseEnter={ ()=>mouseEntered(x,y)}
+    onMouseOver={ ()=>mouseovered(x,y)}
     />
   }
   const InpuItem = forwardRef(cellGenerator)
@@ -88,8 +76,8 @@ const Home = () => {
         if(i || j) {
           let c = 0;//
           let [posX,posY] = [x,y];
-          while(board[posX+=i]?.[posY+=j]) {
-            if(board[posX][posY] === color) return c;
+          while(board[posX+=i] && board[posX][posY+=j]) {
+            if(board[posX][posY] === color) return true;
             c++;//
           }
         }
@@ -107,9 +95,9 @@ const Home = () => {
         if(i || j) {
           let c = 0;//
           let [posX,posY] = [x,y];
-          while(board[posX+=i]?.[posY+=j]) {
+          while(board[posX+1]?.[posY+=j]) {
             if(board[posX][posY] === color) {
-              if(c)result .push([i,j,c]);
+              result .push([i,j,c]);
               break;
             }
             c++;//
@@ -131,11 +119,7 @@ const Home = () => {
             for(let x:number=0;x<8;x++) {
               const row = [];
               for(let y:number=0;y<8;y++) {
-                let color = 'transparent';
-                if(highlightCells.includes(x*8+y)) {
-                  color = 'rgba(100,200,100,0.5)'
-                }
-                const cell = <div className={styles.cell} style={{backgroundColor:color}}>
+                const cell = <div className={styles.cell}>
                   <InpuItem ref={cellRefs.current[x * 8 + y]} x={x} y={y}/>
                 </div>
                 row.push(cell);
