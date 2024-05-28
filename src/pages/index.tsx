@@ -28,22 +28,19 @@ const Home = () => {
     for(var i = -1;i <= 1;i ++) {
       for(var j = -1;j <= 1;j ++) {
         if(i || j) {
-          //let c = 0;
+          let c = 0;
           let isFirst = true;
-          let flag = false;
           let [posX,posY] = [x,y];
-          while(true) {
-            posX += i;
-            posY += j;
-            if(board[posX] && board[posX][posY]) {
-              //if(isSameColor) c++;
-              if(board[posX][posY] == color) {
+          while(board[posX+=i] && board[posX][posY+=j]) {
+              if(board[posX][posY] === color) {
                 if(isFirst) {
-                  flag ||= false;
+                  result ||= false;
                 } else {
-                  flag ||= true;
+                  result ||= true;
                 }
+                break;
               }
+              c++;
               isFirst=false;
               /**
                * phase = 0
@@ -52,22 +49,8 @@ const Home = () => {
                * c > 0 -> true&end
                *
                */
-              switch(phase) {
-                case 0:
-                  if(isSameColor) {
-                    phase = 2;
-                  } else {
-                    phase = 1;
-                  }
-                case 1:
-                  if(isSameColor) {
-                    phase = 2;
-                    flag = true;
-                  }
-              }
-            } else break;
+            }
           }
-          result ||= flag;
         }
       }
     }
