@@ -222,6 +222,7 @@ const Home = () => {
 
                         let stoneStyle = [styles.stone]
                         let water = <div className={styles.wave} style={{opacity:100}}/>;
+                        let __style = {backgroundColor:col,border:border};
                         if(board[x][y]) {
                           stoneStyle.push(styles.fixedStone)
                           water = <div className={styles.wave}
@@ -231,17 +232,20 @@ const Home = () => {
 
                           stoneStyle.push(styles.fixedStone)
                           water = <div className={styles.wave}
-                          style={{opacity:0.5,borderRadius:'0%',transform: 'rotate(360deg)'}}
+                          style={{opacity:0.5,borderRadius:'0%',transform: 'rotate(360deg)',
+                            width:'50%',height:'50%'
+                          }}
                           />
                         }
+
                         stoneStyle = stoneStyle.join(' ')
                         return alreadyHighlighted === (x*8+y)?
-                    <div className={stoneStyle} style={{backgroundColor:col,border:border}} key={x * 8 + y}
+                    <div className={stoneStyle} style={__style} key={x * 8 + y}
                         onClick={ ()=>clicked(x,y) }
                         >
                           {water}
                         </div>
-                        : <div className={stoneStyle} style={{backgroundColor:col,border:border}} key={x * 8 + y}
+                        : <div className={stoneStyle} style={__style} key={x * 8 + y}
                         onClick={ ()=>clicked(x,y) }
                         onMouseEnter={ ()=>mouseEntered(x,y)}
                         >
