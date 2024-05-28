@@ -216,7 +216,8 @@ const Home = () => {
                         putChecker(x,y) && 'white' || 'rgba(255,255,255,0.2)';
 
                         let border = stat == -1 ?'solid 1em rgb(220,220,220)':
-                        stat == 1?'solid 1em rgb(50,50,100)' : 'solid 0em transparent'
+                        stat == 1?'solid 1em rgb(50,50,100)' :putChecker(x,y)?
+                        'dashed 0.3em rgb(55,55,55)': 'solid 0em transparent'
 
 
 
@@ -233,9 +234,10 @@ const Home = () => {
                           stoneStyle.push(styles.fixedStone)
                           water = <div className={styles.wave}
                           style={{opacity:0.5,borderRadius:'0%',transform: 'rotate(360deg)',
-                            width:'50%',height:'50%'
+                            width:'50%',height:'50%',transitionDuration:'2s'
                           }}
                           />
+                          __style.width=__style.height='50%';
                         }
 
                         stoneStyle = stoneStyle.join(' ')
