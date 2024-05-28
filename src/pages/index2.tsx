@@ -25,22 +25,20 @@ const Home = () => {
      * 0 -
      */
     let result = false;
-    console.log(x,y)
     for(var i = -1;i <= 1;i ++) {
       for(var j = -1;j <= 1;j ++) {
         if(i || j) {
           let c = 0;
           let [posX,posY] = [x,y];
-          while(board[posX+=i] && board[posX][posY+=j] && (board[posX][posY] !== color)) c++;
-          console.log(['←','・','→'][i+1]+['↑','・','↓'][j+1],':',c,board[posX][posY]==color,posX,posY)
-          result ||= c && (board[posX][posY] === color);
+          while(board[posX+=i] && board[posX][posY+j] && board[posX][posY+=j] !== color) c++;
+          result ||= ((8-x)*i - c) && ((8-))
         }
       }
     }
     return result;
   }
   function clicked(x:number,y:number) {
-    if(!board[x][y] && putChecker(x,y)) {
+    if(!board[x][y]) {
       const copiedBoard = structuredClone(board);//DeepCopy
       copiedBoard[x][y] = turnColor
       setBoard(copiedBoard)
