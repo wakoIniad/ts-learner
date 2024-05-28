@@ -190,7 +190,7 @@ const Home = () => {
           <div className={styles.nowTurnDisplay}>
             {
               (function(){
-                return <em>now: {['○','','◎'][turnColor+1]}</em>
+                return <em>now: {['black','','white'][turnColor+1]}</em>
               })()
             }
           </div>
@@ -217,7 +217,7 @@ const Home = () => {
 
                         let border = stat == -1 ?'solid 1em rgb(220,220,220)':
                         stat == 1?'solid 1em rgb(50,50,100)' :putChecker(x,y)?
-                        'dashed 0.3em rgb(55,55,55)': 'solid 0em transparent'
+                        'dashed 0.25em rgb(78, 48, 34)': 'solid 0em transparent'
 
 
 
@@ -234,10 +234,13 @@ const Home = () => {
                           stoneStyle.push(styles.fixedStone)
                           water = <div className={styles.wave}
                           style={{opacity:0.5,borderRadius:'0%',transform: 'rotate(360deg)',
-                            width:'50%',height:'50%',transitionDuration:'2s'
+                            width:'50%',height:'50%'
                           }}
                           />
                           __style.width=__style.height='50%';
+                          if(putChecker(x,y)) {
+                            stoneStyle.push(styles.hovers)
+                          }
                         }
 
                         stoneStyle = stoneStyle.join(' ')
