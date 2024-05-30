@@ -1,7 +1,15 @@
 import { useState ,useRef, createRef, RefObject, forwardRef } from 'react';
+
+import useSound from 'use-sound';
+//import soundEffectWhite from 'https://drive.google.com/file/d/1Lozb20QkdBmAkh6ZBqp6PqZJPoxh8Hyr/view?usp=sharing';
+//import soundEffectBlack from 'https://drive.google.com/file/d/1KZc467p7oytG62_5fvXLGvrIg0xsqOs-/view?usp=sharing';
 import styles from './index.module.css';
 
 const Home = () => {
+ // const [playWhiteEffect, { stopWhiteEffect, pauseWhiteEffect }] = useSound(soundEffectWhite);
+ // const [playBlackEffect, { stopBlackEffect, pauseBlackEffect }] = useSound(soundEffectBlack);
+  const audioEffect01 = useRef(0);
+  const audioEffect02 = useRef(0);
 
   function getTeamStones() {
     let BLACK = 0;
@@ -132,6 +140,13 @@ const Home = () => {
       if(mode!==0)return;
       const turnableStones = getTurnableStones(x,y);
       if(turnableStones.length) {
+        //const audioPlay = [audioEffect01,0,audioEffect02][turnColor+1];
+  //      const audioPlay = [playBlackEffect,playWhiteEffect];
+        const audioURL = `../../src/sounds/${['black','','white'][turnColor+1]}-effect.mp3`;
+        console.log(audioURL);
+        const audioPlay = new Audio(audioURL);
+        //console.log(Object.keys(audioPlay.current).toString())
+        audioPlay.play();
         const copiedBoard = structuredClone(board);//DeepCopy
         copiedBoard[x][y] = turnColor
 
@@ -212,11 +227,11 @@ const Home = () => {
                     {
                       (function(x,y) {
                         const stat = board[x][y];
-                        let col = stat && ( (stat+1) && 'white'  || 'transparent' ) ||
+                        let col = stat && ( (stat+1) && 'transparent' || 'white' ) ||
                         putChecker(x,y) && 'white' || 'rgba(255,255,255,0.2)';
 
-                        let border = stat == -1 ?'solid 1em rgb(220,220,220)':
-                        stat == 1?'solid 1em rgb(50,50,100)' :putChecker(x,y)?
+                        let border = stat == -1 ?'solid 1em rgb(50,50,100)':
+                        stat == 1?'solid 1em rgb(220,220,220)' :putChecker(x,y)?
                         'dashed 0.25em rgb(78, 48, 34)': 'solid 0em transparent'
 
 
@@ -268,6 +283,8 @@ const Home = () => {
             })()
           }
         </div>
+        <audio src="../sounds/black-effect.mp3" ref={audioEffect01}></audio>
+        <audio src="../sounds/white-effect.mp3" ref={audioEffect02}></audio>
       </div>
     );
   }
