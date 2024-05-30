@@ -145,21 +145,10 @@ const Home = () => {
       if(mode!==0)return;
       const turnableStones = getTurnableStones(x,y);
       if(turnableStones.length) {
-        const audioPlay = [audioEffect01,0,audioEffect02][turnColor+1];
-        //const audioPlay = [playBlackEffect,0,playWhiteEffect][turnColor+1];
-        //const audioURL = `../../src/pages/${['black','','white'][turnColor+1]}-effect.mp3`;
-        /*const audioURL = ['https://drive.google.com/file/d/1KZc467p7oytG62_5fvXLGvrIg0xsqOs-/view?usp=sharing',
-        '',
-        'https://drive.google.com/file/d/1Lozb20QkdBmAkh6ZBqp6PqZJPoxh8Hyr/view?usp=sharing'
-        ][turnColor+1]*/
-        const audioCr = audioPlay.current;
-        console.log(audioCr);
-        audioCr.play();
-        //console.log(audioURL);
-        //const audioPlay = new Audio(audioURL);
-        //console.log(Object.keys(audioPlay.current).toString())
-        //audioPlay.play();
-        //audioPlay();
+        const dataURI = [BLACK_DATA_URI,0,WHITE_DATA_URI][turnColor+1];
+        const sound = new Audio(dataURI);
+        sound.play();
+
         const copiedBoard = structuredClone(board);//DeepCopy
         copiedBoard[x][y] = turnColor
 
