@@ -1,13 +1,13 @@
 import { useState ,useRef, createRef, RefObject, forwardRef } from 'react';
 
 import useSound from 'use-sound';
-//import soundEffectWhite from 'https://drive.google.com/file/d/1Lozb20QkdBmAkh6ZBqp6PqZJPoxh8Hyr/view?usp=sharing';
-//import soundEffectBlack from 'https://drive.google.com/file/d/1KZc467p7oytG62_5fvXLGvrIg0xsqOs-/view?usp=sharing';
+//import soundEffectWhite from '../pages/white-effect.mp3';
+//import soundEffectBlack from '../pages/white-effect.mp3';
 import styles from './index.module.css';
 
 const Home = () => {
- // const [playWhiteEffect, { stopWhiteEffect, pauseWhiteEffect }] = useSound(soundEffectWhite);
- // const [playBlackEffect, { stopBlackEffect, pauseBlackEffect }] = useSound(soundEffectBlack);
+  //const [playWhiteEffect, { stopWhiteEffect, pauseWhiteEffect }] = useSound(soundEffectWhite);
+  //const [playBlackEffect, { stopBlackEffect, pauseBlackEffect }] = useSound(soundEffectBlack);
   const audioEffect01 = useRef(0);
   const audioEffect02 = useRef(0);
 
@@ -141,12 +141,17 @@ const Home = () => {
       const turnableStones = getTurnableStones(x,y);
       if(turnableStones.length) {
         //const audioPlay = [audioEffect01,0,audioEffect02][turnColor+1];
-  //      const audioPlay = [playBlackEffect,playWhiteEffect];
-        const audioURL = `../../src/sounds/${['black','','white'][turnColor+1]}-effect.mp3`;
+        //const audioPlay = [playBlackEffect,0,playWhiteEffect][turnColor+1];
+        //const audioURL = `../../src/pages/${['black','','white'][turnColor+1]}-effect.mp3`;
+        const audioURL = ['https://drive.google.com/file/d/1KZc467p7oytG62_5fvXLGvrIg0xsqOs-/view?usp=sharing',
+        '',
+        'https://drive.google.com/file/d/1Lozb20QkdBmAkh6ZBqp6PqZJPoxh8Hyr/view?usp=sharing'
+        ][turnColor+1]
         console.log(audioURL);
         const audioPlay = new Audio(audioURL);
         //console.log(Object.keys(audioPlay.current).toString())
         audioPlay.play();
+        //audioPlay();
         const copiedBoard = structuredClone(board);//DeepCopy
         copiedBoard[x][y] = turnColor
 
@@ -283,8 +288,8 @@ const Home = () => {
             })()
           }
         </div>
-        <audio src="../sounds/black-effect.mp3" ref={audioEffect01}></audio>
-        <audio src="../sounds/white-effect.mp3" ref={audioEffect02}></audio>
+        <audio src="../pages/black-effect.mp3" ref={audioEffect01}></audio>
+        <audio src="../pages/white-effect.mp3" ref={audioEffect02}></audio>
       </div>
     );
   }

@@ -29,10 +29,14 @@
 }
 
 .info:hover {
-  transform: translateY(50%); /* ホバー時に下線を5px下に移動させる */
-  opacity: 0;                 /* ホバー時に下線を透明にすることで徐々に消えるように見せる */
+  transform: translateY(500%); 
+  opacity: 0;
   transition-duration: .5s;
+  width:0px;
+  height:10px;
+  /*pointer-events: none;*/
 }
+
 .info {
   position: fixed;
   top: 1%;
